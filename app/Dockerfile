@@ -1,20 +1,21 @@
-FROM python:3.10
+FROM python:3.10-bullseye
 
 LABEL MAINTANER="Jonas Geschonke <jonas.geschonke@gmx.de>"
 
-ENV GROUP_ID=1000\USER_ID=1000
+ENV GROUP_ID=1000
+ENV USER_ID=1000
 
-WORKDIR /var/app
+WORKDIR /app
 
-ADD ./requirements.txt /var/app/requirements.txt
+ADD ./requirements.txt /app/requirements.txt
 RUN pip install -r requirements.txt
-ADD . /var/app/
+ADD . /app/
 RUN pip install gunicorn
 
-RUN addgroup -g $GROUP_ID app
-RUN adduser -D -u $USER_ID -G app app -s /bin/sh
+# RUN addgroup --gid $GROUP_ID app
+# RUN adduser --default --uid $USER_ID --group app app --shell /bin/sh
 
-USER app
+# USER app
 
 EXPOSE 5000
 
